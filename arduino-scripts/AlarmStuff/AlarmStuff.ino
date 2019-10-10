@@ -12,6 +12,8 @@
 
 // include all Libraries needed:
 #include <Process.h>
+#include <Wire.h>
+#include <Digital_Light_TSL2561.h>
 
 // Write API Key
 String writeAPIKey = "VDV0DDKP3IRT62SI";      // ENTER YOUR WRITE API KEY HERE!!!
@@ -28,10 +30,13 @@ int light;
 //
 void setup() 
 {
+  Wire.begin();
+  
   // start serial port:
   Bridge.begin();
   Serial.begin(9600);
-
+  TSL2561.init();
+  
   while (!Serial);   // Block waiting for Network Serial to open
   Serial.println("ThingSpeak client");
 
@@ -62,8 +67,8 @@ void loop()
   }
 
   // LIGHT
-  light = analogRead(A0);
-  Serial.println("Light: " + String(light));
+  Serial.print("The Light value is: ");
+  //Serial.println(TSL2561.readVisibleLux());
   
   delay(1000);
 
