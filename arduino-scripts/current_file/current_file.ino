@@ -21,6 +21,10 @@ const unsigned long postingInterval = 15000;  // delay between updates. Minimum 
 unsigned long lastRequest = 0;                // when you last made a request
 String dataString = "";
 
+int loudness; // A0
+#define IRsensor A1 // Sharp IR GP2Y0A41SK0F (4-30cm, analog)
+// https://www.instructables.com/id/How-to-Use-the-Sharp-IR-Sensor-GP2Y0A41SK0F-Arduin/
+
 //
 void setup() 
 {
@@ -42,6 +46,19 @@ void loop()
 {
   // Get a timestamp so you can calculate reading and sending intervals:
   long now = millis();
+
+// ------------- LOUDNESS --------------------
+  loudness = analogRead(0);
+  Serial.println("Loudness:" + String(loudness));
+
+// ------------- IR SENSOR --------------------
+  float volts = analogRead(IRsensor)*0.0048828125;  // value from sensor * (5/1024)
+  int distance = 13*pow(volts, -1); // worked out from datasheet graph
+  delay(500);
+  
+  if (distance <= 30){
+    Serial.println("Distance: " + String(distance));   // print the distance
+  }
 
   // If the sending interval has passed since the
   // last connection, then connect again and send data:
