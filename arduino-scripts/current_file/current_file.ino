@@ -54,11 +54,10 @@ void loop()
 // ------------- IR SENSOR --------------------
   float volts = analogRead(A2)*0.0048828125;  // value from sensor * (5/1024)
   distance = 13*pow(volts, -1); // worked out from datasheet graph
-  delay(500);
   
-  if (distance <= 30){
-    Serial.println("Distance: " + String(distance));   // print the distance
-  }
+  Serial.println("Loudness: " + String(loudness) + "   Distance: " + String(distance));   // print the distance
+
+  delay(500);
 
   // If the sending interval has passed since the
   // last connection, then connect again and send data:
@@ -80,8 +79,8 @@ void updateData()
   dataString = "api_key=" + writeAPIKey + "&";
   dataString += "field1=";
   dataString += String(loudness);
-//  dataString += "&field2=";
-//  dataString += ;
+  dataString += "&field2=";
+  dataString += String(distance);
 //  dataString += "&field3=";
 //  dataString += ;
 // ETC ...
