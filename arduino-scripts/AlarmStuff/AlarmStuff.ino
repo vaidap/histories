@@ -67,7 +67,7 @@ void loop()
   }
 
   // LIGHT
-  Serial.print("The Light value is: ");
+  //Serial.print("The Light value is: ");
   //Serial.println(TSL2561.readVisibleLux());
   
   delay(1000);
@@ -77,8 +77,8 @@ void loop()
   if (now - lastRequest >= postingInterval) 
   {
     // not sending anything right now 
-    //updateData();
-    // sendData();
+    updateData();
+    sendData();
     lastRequest = now;
   }
 }
