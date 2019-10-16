@@ -22,8 +22,8 @@ unsigned long lastRequest = 0;                // when you last made a request
 String dataString = "";
 
 int loudness; // A0
-int distance; // A2, Sharp IR GP2Y0A41SK0F (4-30cm, analog)
-// https://www.instructables.com/id/How-to-Use-the-Sharp-IR-Sensor-GP2Y0A41SK0F-Arduin/
+//int distance; // A2, Sharp IR GP2Y0A41SK0F (4-30cm, analog)
+//// https://www.instructables.com/id/How-to-Use-the-Sharp-IR-Sensor-GP2Y0A41SK0F-Arduin/
 
 //
 void setup() 
@@ -52,10 +52,10 @@ void loop()
   //Serial.println("Loudness:" + String(loudness));
 
 // ------------- IR SENSOR --------------------
-  float volts = analogRead(A2)*0.0048828125;  // value from sensor * (5/1024)
-  distance = 13*pow(volts, -1); // worked out from datasheet graph
-  
-  Serial.println("Loudness: " + String(loudness) + "   Distance: " + String(distance));   // print the distance
+//  float volts = analogRead(A2)*0.0048828125;  // value from sensor * (5/1024)
+//  distance = 13*pow(volts, -1); // worked out from datasheet graph
+//  
+//  Serial.println("Loudness: " + String(loudness) + "   Distance: " + String(distance));   // print the distance
 
   delay(500);
 
@@ -80,7 +80,7 @@ void updateData()
   dataString += "field1=";
   dataString += String(loudness);
   dataString += "&field2=";
-  dataString += String(distance);
+  dataString += "100"; // random value
 //  dataString += "&field3=";
 //  dataString += ;
 // ETC ...
