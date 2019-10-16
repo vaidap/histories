@@ -22,7 +22,7 @@ unsigned long lastRequest = 0;                // when you last made a request
 String dataString = "";
 
 int loudness; // A0
-#define IRsensor A1 // Sharp IR GP2Y0A41SK0F (4-30cm, analog)
+int distance; // A2, Sharp IR GP2Y0A41SK0F (4-30cm, analog)
 // https://www.instructables.com/id/How-to-Use-the-Sharp-IR-Sensor-GP2Y0A41SK0F-Arduin/
 
 //
@@ -49,11 +49,11 @@ void loop()
 
 // ------------- LOUDNESS --------------------
   loudness = analogRead(0);
-  Serial.println("Loudness:" + String(loudness));
+  //Serial.println("Loudness:" + String(loudness));
 
 // ------------- IR SENSOR --------------------
-  float volts = analogRead(IRsensor)*0.0048828125;  // value from sensor * (5/1024)
-  int distance = 13*pow(volts, -1); // worked out from datasheet graph
+  float volts = analogRead(A2)*0.0048828125;  // value from sensor * (5/1024)
+  distance = 13*pow(volts, -1); // worked out from datasheet graph
   delay(500);
   
   if (distance <= 30){
@@ -79,14 +79,14 @@ void updateData()
   dataString = "";
   dataString = "api_key=" + writeAPIKey + "&";
   dataString += "field1=";
-  dataString += random(10) + 20;
+  dataString += String(loudness);
 //  dataString += "&field2=";
 //  dataString += ;
 //  dataString += "&field3=";
 //  dataString += ;
 // ETC ...
   
-  Serial.println("dataString " + dataString);
+  Serial.println("dataString: " + dataString + "\n");
 }
 
 // This function makes a HTTP connection to the server:
