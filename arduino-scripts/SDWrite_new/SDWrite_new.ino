@@ -6,10 +6,11 @@
 #include <SoftwareSerial.h>
 #include <SD.h>
 
-#define CHIP_SELECT 10                         // For an Uno it's 10
+#define CHIP_SELECT 10                         // For an Uno it's 10, we're using a Yun tho? can use ReadWrite default Example instead as well
 
 SoftwareSerial SoftSerial(8, 7);
 File logfile;
+unsigned long time;
 
 //
 // Setup
@@ -38,7 +39,7 @@ void setupSDFile()
   }
 
   char filename[15];
-  strcpy(filename, "LOGFIL00.TXT");
+  strcpy(filename, "LOGFILE00.csv");
   for (uint8_t i = 0; i < 100; i++) 
   {
     filename[6] = '0' + i/10;
@@ -80,18 +81,42 @@ void loop()
 //
 void outputData()
 {
-  int sensor = analogRead(A0);
+  time = millis();
+
+  //int sensor = analogRead(A0);
   String dataString = "";
 
-  dataString += String(sensor);
+  //dataString += String(sensor);
 
   // if the file is available, write to it:
   if (logfile) 
   {
-    logfile.println(dataString);
+    //logfile.println(dataString);
+
+    logfile.print(String(time));
+    logfile.print(",");
+    logfile.print("oneOne");
+    logfile.print(",");
+    logfile.println("twoOne");
+
+    logfile.print(String(time));
+    logfile.print(",");
+    logfile.print("oneTwo");
+    logfile.print(",");
+    logfile.println("TwoTwo");
 
     // print to the serial port too:
-    Serial.println(dataString);
+    Serial.print(String(time));
+    Serial.print(",");
+    Serial.print("oneOne");
+    Serial.print(",");
+    Serial.println("twoOne");
+
+    Serial.print(String(time));
+    Serial.print(",");
+    Serial.print("oneTwo");
+    Serial.print(",");
+    Serial.println("TwoTwo");
   }
 
   logfile.flush();
