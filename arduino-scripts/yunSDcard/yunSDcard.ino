@@ -33,12 +33,25 @@
 #include <FileIO.h>
 
 int loudness; // A0
-int counter = 0;
+int counter = 0; // for file write
+
+int trigPin = 11;    // Trigger
+int echoPin = 12;    // Echo
+long duration, cm, inches;
+
+int light_1 = 0;
+int light_2 = 0;
 
 void setup() {
   // Initialize the Bridge and the Serial
   Bridge.begin();
   Serial.begin(9600);
+
+  //Define inputs and outputs for ultrasonic
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  
   FileSystem.begin();
 
   while (!SerialUSB); // wait for Serial port to connect.
@@ -54,6 +67,28 @@ void loop() {
     counter = 0;
     Serial.println("should print to SD card here");
     }
+
+    // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
+  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  // Read the signal from the sensor: a HIGH pulse whose
+  // duration is the time (in microseconds) from the sending
+  // of the ping to the reception of its echo off of an object.
+  pinMode(echoPin, INPUT);
+  duration = pulseIn(echoPin, HIGH);
+ 
+  // Convert the time into a distance
+  cm = (duration/2) / 29.1;     // Divide by 29.1 or multiply by 0.0343
+  inches = (duration/2) / 74;   // Divide by 74 or multiply by 0.0135
+
+  // Light
+  light_1 = analogRead(A1);
+  light_2 = analogRead(A2);
   
   // make a string that start with a timestamp for assembling the data to log:
   String dataString;
@@ -91,7 +126,7 @@ dataString += "testing the sd card";
 //  delay(15000);
 
     loudness = analogRead(0);
-    Serial.println(loudness);
+    Serial.println( "Loudness: " + String(loudness) + " Ultrasonic: " + String(cm) + "cm" + " Light 1 : " + String(light_1) + " Light 2 : " + String(light_2));
 
     delay(1000);
 
