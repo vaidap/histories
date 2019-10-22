@@ -61,13 +61,6 @@ void setup() {
 
 void loop() {
 
-  // For writing to SD card
-  counter += 1;
-  if (counter == 10) {
-    counter = 0;
-    Serial.println("should print to SD card here");
-    }
-
     // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
   digitalWrite(trigPin, LOW);
@@ -106,27 +99,46 @@ void loop() {
 
 dataString += "testing the sd card";
 
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  // The FileSystem card is mounted at the following "/mnt/FileSystema1"
-//  File dataFile = FileSystem.open("/mnt/sd/datalog.txt", FILE_APPEND);
-//
-//  // if the file is available, write to it:
-//  if (dataFile) {
-//    dataFile.println(dataString);
-//    dataFile.close();
-//    // print to the serial port too:
-//    SerialUSB.println(dataString);
-//  }
-//  // if the file isn't open, pop up an error:
-//  else {
-//    SerialUSB.println("error opening datalog.txt");
-//  }
-//
-//  delay(15000);
-
     loudness = analogRead(0);
     Serial.println( "Loudness: " + String(loudness) + " Ultrasonic: " + String(cm) + "cm" + " Light 1 : " + String(light_1) + " Light 2 : " + String(light_2));
+
+    Serial.println("Printing to SD card...");
+
+      // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  // The FileSystem card is mounted at the following "/mnt/FileSystema1"
+  File dataFile = FileSystem.open("/mnt/sd/datalog.txt", FILE_APPEND);
+
+  // if the file is available, write to it:
+  if (dataFile) {
+//    dataFile.println(dataString);
+
+    unsigned long currentTime = millis();
+    dataFile.print(currentTime);
+    dataFile.print(",");
+    dataFile.print(String(loudness));
+    dataFile.print(",");
+    dataFile.print(String(cm));
+    dataFile.print(",");
+    dataFile.print(String(light_1));
+    dataFile.print(",");
+    dataFile.println(String(light_2));
+
+    
+    dataFile.close();
+    // print to the serial port too:
+//    SerialUSB.println(dataString);
+  }
+  // if the file isn't open, pop up an error:
+  else {
+    SerialUSB.println("error opening datalog.txt");
+  }
+
+//  // For writing to SD card
+//  counter += 1;
+//  if (counter == 9) {
+//    counter = 0;  
+//    }
 
     delay(1000);
 
