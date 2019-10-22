@@ -107,7 +107,7 @@ dataString += "testing the sd card";
       // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
   // The FileSystem card is mounted at the following "/mnt/FileSystema1"
-  File dataFile = FileSystem.open("/mnt/sd/datalog.txt", FILE_APPEND);
+  File dataFile = FileSystem.open("/mnt/sd/datalog.csv", FILE_APPEND);
 
   // if the file is available, write to it:
   if (dataFile) {
@@ -131,7 +131,7 @@ dataString += "testing the sd card";
   }
   // if the file isn't open, pop up an error:
   else {
-    SerialUSB.println("error opening datalog.txt");
+    SerialUSB.println("error opening datalog.csv");
   }
 
 //  // For writing to SD card
